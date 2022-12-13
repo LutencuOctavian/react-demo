@@ -11,9 +11,10 @@ import {
     Row
 } from 'reactstrap';
 import PersonForm from "./components/person-form";
-
-import * as API_USERS from "./api/person-api"
+import * as API_LOGIN from "./api/login-api"
+// import * as API_USERS from "./api/person-api"
 import PersonTable from "./components/person-table";
+import LoginForm from "../commons/login/login-form";
 
 
 
@@ -38,20 +39,20 @@ class PersonContainer extends React.Component {
     }
 
     fetchPersons() {
-        return API_USERS.getPersons((result, status, err) => {
-
-            if (result !== null && status === 200) {
-                this.setState({
-                    tableData: result,
-                    isLoaded: true
-                });
-            } else {
-                this.setState(({
-                    errorStatus: status,
-                    error: err
-                }));
-            }
-        });
+        // return API_USERS.getPersons((result, status, err) => {
+        //
+        //     if (result !== null && status === 200) {
+        //         this.setState({
+        //             tableData: result,
+        //             isLoaded: true
+        //         });
+        //     } else {
+        //         this.setState(({
+        //             errorStatus: status,
+        //             error: err
+        //         }));
+        //     }
+        // });
     }
 
     toggleForm() {
@@ -71,13 +72,19 @@ class PersonContainer extends React.Component {
         return (
             <div>
                 <CardHeader>
-                    <strong> Person Management </strong>
+                    <strong> User LogIn </strong>
                 </CardHeader>
                 <Card>
                     <br/>
                     <Row>
                         <Col sm={{size: '8', offset: 1}}>
                             <Button color="primary" onClick={this.toggleForm}>Add Person </Button>
+                        </Col>
+                    </Row>
+                    <br/>
+                    <Row>
+                        <Col sm={{size: '8', offset: 1}}>
+                            <Button color="primary" onClick={this.toggleForm}>LogIn </Button>
                         </Col>
                     </Row>
                     <br/>
@@ -97,6 +104,14 @@ class PersonContainer extends React.Component {
                     <ModalHeader toggle={this.toggleForm}> Add Person: </ModalHeader>
                     <ModalBody>
                         <PersonForm reloadHandler={this.reload}/>
+                    </ModalBody>
+                </Modal>
+
+                <Modal isOpen={this.state.selected} toggle={this.toggleForm}
+                       className={this.props.className} size="lg">
+                    <ModalHeader toggle={this.toggleForm}> Login </ModalHeader>
+                    <ModalBody>
+                        <LoginForm reloadHandler={this.reload}/>
                     </ModalBody>
                 </Modal>
 

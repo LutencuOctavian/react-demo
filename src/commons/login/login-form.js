@@ -1,9 +1,11 @@
 import React from "react";
 //import validate from "./validators/person-validators";
-import * as API_LOGIN from "../api/login-api";
+import * as API_LOGIN from "../../person/api/login-api";
+import * as API_USER from "../../commons/displayuser/user-api";
 import {Col, FormGroup, Input, Label, Row} from "reactstrap";
 import Button from "react-bootstrap/Button";
-import APIResponseErrorMessage from "../../commons/errorhandling/api-response-error-message";
+import APIResponseErrorMessage from "../errorhandling/api-response-error-message";
+import base64 from "react-native-base64";
 
 class LoginForm extends React.Component {
 
@@ -77,14 +79,37 @@ class LoginForm extends React.Component {
 
     };
 
-    registerPerson(login) {
+    loginUser(login) {
+        window.localStorage.clear();
         return API_LOGIN.postLogin(login, (result, status, error) => {
             if (result !== null && (status === 200 || status === 201)) {
                  let dataJWT1=JSON.stringify(result);
                 let dataJWT=JSON.parse(dataJWT1);
-                localStorage.setItem("jwt",dataJWT['jwt']);
+                const jwt=dataJWT['jwt'];
+                localStorage.setItem("jwt",jwt);
                 console.log("Successfully inserted person with id: " + JSON.stringify(result));
-                this.reloadHandler();
+                const [headerB64, payloadB64] = jwt.split('.');
+                const aux=base64.decode(payloadB64);
+                const finalStr0 = aux.trim();
+                const finalStr01 = finalStr0.replaceAll('\u0000','');
+                const a1 =JSON.stringify(finalStr01);
+                const a2 =JSON.parse(finalStr01);
+                const a3=a2['roles'];
+                const a4=a3[0];
+                const user=JSON.stringify(a4['authority']);
+                const user1=user.replaceAll('"', '');
+                const userName1=a2['sub'];
+                const userName=userName1.replaceAll('"', '');
+                localStorage.setItem('userName', userName );
+                localStorage.setItem("rol",user1);
+                if(user1==="ADMIN"){
+                    window.location.replace('/users')
+                }else if(user1==="CLIENT"){
+                    window.location.replace('/client')
+                }else{
+                  window.location.replace('/login')
+                }
+                //this.reloadHandler();
             } else {
                 this.setState(({
                     errorStatus: status,
@@ -94,13 +119,43 @@ class LoginForm extends React.Component {
         });
     }
 
+    // setUserDataInLocalStorage(){
+    //     let jwt= localStorage.getItem("jwt");
+    //     const [headerB64, payloadB64] = jwt.split('.');
+    //     const aux=base64.decode(payloadB64);
+    //     const finalStr0 = aux.trim();
+    //     const finalStr01 = finalStr0.replaceAll('\u0000','');
+    //     const a1 =JSON.stringify(finalStr01);
+    //     const a2 =JSON.parse(finalStr01);
+    //     const a3=a2['sub'];
+    //     const user=JSON.stringify(a3);
+    //     const userName=user.replaceAll('"', '');
+    //     console.log(userName);
+    //     localStorage.setItem("userName", userName);
+    //     API_USER.getUserByName(userName, (result, status, error) => {
+    //         if (result !== null && (status === 200 || status === 201)) {
+    //             console.log(result['id']);
+    //             localStorage.setItem('idUser', result['id']);
+    //             console.log(result['id']);
+    //             //this.reloadHandler();
+    //         } else {
+    //             this.setState(({
+    //                 errorStatus: status,
+    //                 error: error
+    //             }));
+    //         }
+    //     });
+    //
+    // }
+
     handleSubmit() {
         let login = {
             userName: this.state.formControls.userName.value,
             password: this.state.formControls.password.value,
         };
 
-        this.registerPerson(login);
+        this.loginUser(login);
+       // this.setUserDataInLocalStorage();
     }
 
     render() {
@@ -123,6 +178,7 @@ class LoginForm extends React.Component {
                 <FormGroup id='password'>
                     <Label for='passwordField'> Password </Label>
                     <Input name='password' id='passwordFieldField' placeholder={this.state.formControls.password.placeholder}
+                           type={'password'}
                            onChange={this.handleChange}
                            defaultValue={this.state.formControls.password.value}
                            touched={this.state.formControls.password.touched? 1 : 0}
@@ -149,3 +205,4 @@ class LoginForm extends React.Component {
 }
 
 export default LoginForm;
+

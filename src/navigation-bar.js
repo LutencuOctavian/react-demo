@@ -1,15 +1,11 @@
 import React from 'react'
-import logo from './commons/images/icon.png';
+import logo from './commons/images/img1.png';
 
 import {
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
+    Button,
     Nav,
     Navbar,
     NavbarBrand,
-    NavLink,
-    UncontrolledDropdown
 } from 'reactstrap';
 
 const textStyle = {
@@ -17,28 +13,22 @@ const textStyle = {
     textDecoration: 'none'
 };
 
+const buttomStyle={
+    color: 'white',
+};
+
+
 const NavigationBar = () => (
     <div>
-        <Navbar color="dark" light expand="md">
+        <Navbar color="dark" >
+            {/*light expand="md">*/}
             <NavbarBrand href="/">
                 <img src={logo} width={"50"}
                      height={"35"} />
             </NavbarBrand>
-            <Nav className="mr-auto" navbar>
-
-                <UncontrolledDropdown nav inNavbar>
-                    <DropdownToggle style={textStyle} nav caret>
-                       Menu
-                    </DropdownToggle>
-                    <DropdownMenu right >
-
-                        <DropdownItem>
-                            <NavLink href="/person">Persons</NavLink>
-                        </DropdownItem>
-
-
-                    </DropdownMenu>
-                </UncontrolledDropdown>
+            <Nav>
+                <Button color="red" style={buttomStyle}><a href={"/Login"}>LogIn</a> </Button>
+                <Button color="red" style={buttomStyle} onClick={()=>window.localStorage.clear()}><a href={"/"}>LogOut</a> </Button>
 
             </Nav>
         </Navbar>

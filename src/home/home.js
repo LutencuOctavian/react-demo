@@ -1,6 +1,6 @@
 import React from 'react';
 
-import BackgroundImg from '../commons/images/future-medicine.jpg';
+import BackgroundImg from '../commons/images/img2.jpg';
 
 import {Button, Container, Jumbotron} from 'reactstrap';
 
@@ -24,17 +24,10 @@ class Home extends React.Component {
             <div>
                 <Jumbotron fluid style={backgroundStyle}>
                     <Container fluid>
-                        <h1 className="display-3" style={textStyle}>Integrated Medical Monitoring Platform for Home-care assistance</h1>
-                        <p className="lead" style={textStyle}> <b>Enabling real time monitoring of patients, remote-assisted care services and
-                            smart intake mechanism for prescribed medication.</b> </p>
-                        <hr className="my-2"/>
-                        <p  style={textStyle}> <b>This assignment represents the first module of the distributed software system "Integrated
-                            Medical Monitoring Platform for Home-care assistance that represents the final project
-                            for the Distributed Systems course. </b> </p>
-                        <p className="lead">
-                            <Button color="primary" onClick={() => window.open('http://coned.utcluj.ro/~salomie/DS_Lic/')}>Learn
-                                More</Button>
-                        </p>
+                        <h1 className="display-3" style={textStyle}>Energy Management System Platform for Home</h1>
+                        <p style={textStyle}><b> An energy management system (EMS) is a system of computer-aided tools used by operators of electric utility
+                        grids to monitor, control, and optimize the performance of the generation or transmission system. </b></p>
+
                     </Container>
                 </Jumbotron>
 

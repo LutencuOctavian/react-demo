@@ -114,7 +114,6 @@ class PersonForm extends React.Component {
             address: this.state.formControls.address.value
         };
 
-        console.log(person);
         this.registerPerson(person);
     }
 
